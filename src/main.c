@@ -3,6 +3,7 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <unistd.h> //needed for read() and STDIN_FILENO
+#include <fcntl.h>
 
 #define MAX_INPUT 1024
 #define MAX_TOKENS 64
@@ -201,6 +202,78 @@ int handle_builtins(char **tokens, int token_count) {
   return 0; // Not a builtin
 }
 
+int setup_redirection(int *token_count, char **tokens, int saved_fds[3]) {
+    // Loop through the tokens and look for redirection symbols
+    for (int i = 0; i < *token_count; i++) {
+        if (strcmp(tokens[i], ">") == 0 || strcmp(tokens[i] , "1>") == 0) {
+            char *filename = tokens[i+1];
+            if (filename == NULL) {
+                fprintf(stderr, "Unexpected token newline\n");
+                return -2;
+            } else {
+                // take a backup of original fd to restore later
+                saved_fds[1] = dup(STDIN_FILENO);
+
+                // Open the file
+                int new_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+                if(new_fd < 0) {
+                    perror("open");
+                    return -2;
+                }
+
+                //Replace original fd with new fd
+                dup2(new_fd, STDOUT_FILENO);
+                close(new_fd);
+
+                //Cleanup tokens
+                tokens[i] = NULL;
+                *token_count = i;
+
+                break;
+            }
+        }
+        else if (strcmp(tokens[i] , "2>") == 0) {
+            char *filename = tokens[i+1];
+            if (filename == NULL) {
+                fprintf(stderr, "Unexpected token newline\n");
+                return -2;
+            } else {
+                // take a backup of original fd to restore later
+                saved_fds[2] = dup(STDERR_FILENO);
+
+                // Open the file
+                int new_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+                if(new_fd < 0) {
+                    perror("open");
+                    return -2;
+                }
+
+                //Replace original fd with new fd
+                dup2(new_fd, STDERR_FILENO);
+                close(new_fd);
+
+                //Cleanup tokens
+                tokens[i] = NULL;
+                *token_count = i;
+
+                break;
+            }
+        }
+
+    }
+    return 0;
+}
+
+void restore_redirection(int saved_fds[3]) {
+    for (int i = 0; i < 3; i++) {
+        if (saved_fds[i] != -1) {
+            dup2(saved_fds[i], i);
+            close(saved_fds[i]);
+            saved_fds[i] = -1;
+        }
+    }
+}
+
 
 int main(int argc, char *argv[]) {
   // setbuf toggles the stream's buffering mode
@@ -260,13 +333,24 @@ int main(int argc, char *argv[]) {
       continue;
 
     // -----------------------------------------------------------
+    // Handle redirection
+    // -----------------------------------------------------------
+    int saved_fds[3]; // Standard 0=in 1=out 2=err
+    if (setup_redirection(&token_count, tokens, saved_fds) == -2) {
+        fprintf(stderr, "Error setting up redirection");
+        continue;
+    }
+
+    // -----------------------------------------------------------
     // Use the builtins function
     // -----------------------------------------------------------
     int builtin_status = handle_builtins(tokens, token_count);
     if (builtin_status == 2) {
-      break; // exit command called
+        restore_redirection(saved_fds);
+        break; // exit command called
     } else if (builtin_status == 1) {
-      continue; // command was a builtin and successfully executed
+        restore_redirection(saved_fds);
+        continue; // command was a builtin and successfully executed
     } else {
       // Check if executable exists in PATH
       char *path = find_command_in_path(tokens[0]);
@@ -278,6 +362,8 @@ int main(int argc, char *argv[]) {
       } else {
         printf("%s: command not found\n", tokens[0]);
       }
+
+      restore_redirection(saved_fds);
     }
   }
 
