@@ -5,7 +5,6 @@
 
 int tokenize_input(char *raw_input, char **tokens) {
   // Tokenize the input
-  // Manual Tokenizer replacement for strtok to handle quotes and backslashes
   int token_count = 0;
   char *p = raw_input;
   char quote_type = '\0';

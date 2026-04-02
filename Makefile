@@ -5,7 +5,7 @@ TARGET = myshell
 
 # 2. List of Source Files and Object Files
 # This says: take every .c file and imagine it as a .o file
-SRCS = src/main.c src/parser.c src/executor.c src/builtins.c src/redirection.c
+SRCS = src/main.c src/helpers.c src/parser.c src/executor.c src/builtins.c src/redirection.c
 OBJS = $(SRCS:.c=.o)
 
 # 3. The Default Rule (The "Goal")
