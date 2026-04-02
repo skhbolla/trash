@@ -15,6 +15,9 @@
   </tr>
 </table>
 
+## Demo
+
+<img src="./assets/demo/demo.gif" alt="Demo GIF"/>
 
 ## What is it ?
 
