@@ -14,6 +14,12 @@
 
 int main(int argc, char *argv[]) {
 
+    //Initialize helpers
+    helpers_init();
+
+    // Print the banner
+    print_banner();
+
     //check to see if trace flag is set
     for (int i=1; i < argc; i++)
     {
@@ -52,7 +58,7 @@ int main(int argc, char *argv[]) {
     trace_hex_buffer(raw_input, n);
 
     if (n == 0) {
-      printf("EOF encountered .. Exit triggered\n");
+      trace_print("EOF encountered... Exit triggered");
       break;
     } else if (n < 0) {
       perror("read failed\n");

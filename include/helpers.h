@@ -6,6 +6,10 @@
 // Global flag to toggle debug output
 extern int TRACE_MODE;
 
+void helpers_init();
+
+void print_banner();
+
 // The helper function (using variadic arguments)
 void trace_print(const char *format, ...);
 

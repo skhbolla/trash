@@ -1,7 +1,7 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td width="50%" align="left" valign="middle" style="border: none;">
-      <h1>TRaSH (The TRacing SHell)</h1>
+      <h1>TRaSH (TRacing SHell)</h1>
       <p><i>"The shell that explains itself"</i></p>
       <p>
         <a href="https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html"><img src="https://img.shields.io/badge/Standard-POSIX-blue?style=flat-square" alt="POSIX"></a>

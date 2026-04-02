@@ -1,7 +1,7 @@
 # 1. Variables - Makes it easy to change compilers or flags later
 CC = gcc
 CFLAGS = -I./include -Wall -Wextra -g
-TARGET = myshell
+TARGET = trash
 
 # 2. List of Source Files and Object Files
 # This says: take every .c file and imagine it as a .o file
