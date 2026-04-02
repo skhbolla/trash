@@ -1,8 +1,20 @@
-<img src="./assets/logo/trash_logo_transparent.png" alt="TRaSH" width="600"/>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="50%" align="left" valign="middle" style="border: none;">
+      <h1>TRaSH (The TRacing SHell)</h1>
+      <p><i>"The shell that explains itself"</i></p>
+      <p>
+        <a href="https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html"><img src="https://img.shields.io/badge/Standard-POSIX-blue?style=flat-square" alt="POSIX"></a>
+        <a href="#"><img src="https://img.shields.io/badge/Language-C23-orange?style=flat-square" alt="C23"></a>
+        <a href="#"><img src="https://img.shields.io/badge/Platform-Linux-lightgrey?style=flat-square" alt="Linux"></a>
+      </p>
+    </td>
+    <td width="50%" align="right" valign="middle" style="border: none;">
+      <img src="./assets/logo/trash_logo_transparent.png" alt="TRaSH Logo" width="400"/>
+    </td>
+  </tr>
+</table>
 
-# TRaSH (The TRacing SHell)
-
-> The shell that explains itself
 
 ## What is it ?
 
@@ -67,7 +79,7 @@ I’m building this incrementally, moving from a simple REPL to an educational t
 
 ```bash
 # Clone the repo
-git clone https://github.com/your-username/trash.git
+git clone https://github.com/skhbolla/trash.git
 
 # Build using the provided Makefile
 make
