@@ -48,7 +48,7 @@ under the hood. When I type a command, TRaSH tells me:
 
 * etc.
 
-In other words, **TRaSH is a shell that explains it's every move**
+In other words, **TRaSH is a shell that explains it's every action**
 
 ## Roadmap & Progress
 
